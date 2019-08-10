@@ -18,6 +18,7 @@ public class Person {
     @GenericGenerator(name = "native", strategy = "native")
 	private int id;
 	
+
 	private boolean employed;
 	private String name;
 	private int mobile;
