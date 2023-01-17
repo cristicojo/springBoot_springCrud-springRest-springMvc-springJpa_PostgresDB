@@ -48,9 +48,7 @@ public class PersonService {
 
 	public void delete(Integer id) {
 
-		Person person = repository.findById(id).orElseThrow(() -> new PersonNotFoundException("person not found with id: " + id));
-
-		repository.delete(person);
+		repository.delete(repository.findById(id).orElseThrow(() -> new PersonNotFoundException("person not found with id: " + id)));
 	}
 
 
@@ -58,5 +56,15 @@ public class PersonService {
 
         repository.deleteAll();
 
+	}
+
+
+	public Person partialUpdate(Integer id, String nameRequest) {
+
+		Person person = repository.findById(id).orElseThrow(() -> new PersonNotFoundException("person not found with id: " + id));
+
+		person.setName(nameRequest);
+
+		return repository.save(person);
 	}
 }

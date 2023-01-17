@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -59,5 +60,12 @@ public class PersonController {
 	public void deleteAllPersons() {
 		
 		service.deleteAll();
+	}
+
+
+	@PatchMapping("/person/{id}/{name}")
+	public Person updatePartially(@PathVariable Integer id, @PathVariable String name) {
+
+		return service.partialUpdate(id, name);
 	}
 }
