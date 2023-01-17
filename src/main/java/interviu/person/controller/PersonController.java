@@ -16,14 +16,14 @@ import interviu.person.entity.Person;
 import interviu.person.service.PersonService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/rest")
 public class PersonController {
 	
 	@Autowired
-	PersonService service;
+	private PersonService service;
 	
 	
-	@GetMapping("/persons")
+	@GetMapping("/all")
 	public List<Person> getAll(){
 		
 		return service.findAll();
@@ -32,30 +32,30 @@ public class PersonController {
 	@GetMapping("/person/{id}")
 	public Person getPersonById(@PathVariable(name="id") Integer id) {
 
-		return service.findById(id);
+		return service.findOne(id);
 	}
 	
-	@PostMapping("/persons")
+	@PostMapping("/person")
 	public Person savePerson(@RequestBody Person p) {
 		
-		return service.createPerson(p);
+		return service.create(p);
 	}
 	
 	@PutMapping("/person/{id}")
 	public Person update(@PathVariable(name="id") Integer id, @RequestBody Person p) {
 		
-		return service.updatePerson(id,p);
+		return service.update(p, id);
 		
 	}
 	
 	@DeleteMapping("/person/{id}")
 	public void deleteById(@PathVariable(name="id") Integer id) {
 		
-		service.deletePersonById(id);
+		service.delete(id);
 		
 	}
 	
-	@DeleteMapping("/persons")
+	@DeleteMapping("/all")
 	public void deleteAllPersons() {
 		
 		service.deleteAll();

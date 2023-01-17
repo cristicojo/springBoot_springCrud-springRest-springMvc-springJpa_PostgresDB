@@ -1,78 +1,62 @@
 package interviu.person.service;
 
 import java.util.List;
-import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import interviu.person.entity.Person;
 import interviu.person.exception.PersonNotFoundException;
-import interviu.person.repository.PersonRepo;
+import interviu.person.repository.PersonRepository;
 
 @Service
 public class PersonService {
 
-    @Autowired
-    PersonRepo repo;
-
-    public List<Person> findAll() {
-
-        return repo.findAll();
-    }
-
-    public Person findById(int id) {
-
-        Optional<Person> optional = repo.findById(id);
-        
-        return optional.orElseThrow(() -> new PersonNotFoundException("Could not found a Person with id " + id));
-    	
-    }
+	@Autowired
+	private PersonRepository repository;
 
 
-    public Person createPerson(Person p) {
+	public List<Person> findAll() {
 
-        return repo.save(p);
-    }
+		return repository.findAll();
+	}
 
 
-    public Person updatePerson(int id, Person newP) {
+	public Person findOne(Integer id) {
 
-        Optional<Person> optional = repo.findById(id);
+		return repository.findById(id).orElseThrow(() -> new PersonNotFoundException("person not found with id: " + id));
+	}
 
-        Person p;
-        
-        if (!(optional.isPresent())) {
-            throw new PersonNotFoundException("Could not found a Person with id " + id);
 
-        } 
-        
-        else {
-            p = optional.get();
-            p.setEmployed(newP.isEmployed());
-            p.setName(newP.getName());
-            p.setMobile(newP.getMobile());
-        }
+	public Person update(Person personRequest, Integer id) {
 
-        return repo.save(p);
+		Person newPerson = repository.findById(id).orElseThrow(() -> new PersonNotFoundException("person not found with id: " + id));
 
-    }
-    
-    public void deletePersonById(int id) {
-    	
-        Optional<Person> optional = repo.findById(id);
-        
-        if (!(optional.isPresent())) {
-            throw new PersonNotFoundException("Could not found a Person with id " + id);
-        }
-        
-        else {
-        	   repo.delete(optional.get());
-				
-			}
-    }
-        
-        public void deleteAll() {
-        	
-        	repo.deleteAll();
-        	
-        }
+        newPerson.setEmployed(personRequest.isEmployed());
+        newPerson.setMobile(personRequest.getMobile());
+        newPerson.setName(personRequest.getName());
+
+        return repository.save(newPerson);
+	}
+
+
+	public Person create(Person personRequest) {
+
+		return repository.save(personRequest);
+
+	}
+
+
+	public void delete(Integer id) {
+
+		Person person = repository.findById(id).orElseThrow(() -> new PersonNotFoundException("person not found with id: " + id));
+
+		repository.delete(person);
+	}
+
+
+	public void deleteAll() {
+
+        repository.deleteAll();
+
+	}
 }

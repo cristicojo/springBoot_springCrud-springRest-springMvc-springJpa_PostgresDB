@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import interviu.person.entity.Person;
 
 @Repository
-public interface PersonRepo extends JpaRepository<Person,Integer> {
+public interface PersonRepository extends JpaRepository<Person,Integer> {
 
 }
